@@ -5,9 +5,10 @@ const authentication = require("./routes/auth/authentication");
 const survey= require("./routes/survey/survey")
 const cors = require("cors");
 const bodyParser = require("body-parser");
+require('dotenv').config()
 
-const url =
-  "mongodb+srv://udit:P%40ssw0rd123@cluster0.qexisls.mongodb.net/survey?retryWrites=true&w=majority";
+
+const url ="mongodb://udit:P%40ssw0rd123@ac-sjm6zfd-shard-00-00.qexisls.mongodb.net:27017,ac-sjm6zfd-shard-00-01.qexisls.mongodb.net:27017,ac-sjm6zfd-shard-00-02.qexisls.mongodb.net:27017/survey?ssl=true&replicaSet=atlas-5ese32-shard-0&authSource=admin&retryWrites=true&w=majority";
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -27,7 +28,7 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/auth", authentication);
-// app.use("/app/survey", survey)
+app.use("/app/survey", survey)
 
 app.listen(3000, () => {
   console.log("app is runing");

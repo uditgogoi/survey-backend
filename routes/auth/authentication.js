@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 var salt = 10;
 
 const router = express.Router();
@@ -25,17 +26,18 @@ router.post("/signup", async(req, res) => {
                 password: encrypted,
                 company: req.body.company,
               });
-      
-              newUser.save((err, post) => {
+            
+              newUser.save((err, user) => {
                 if (err) {
                     res.status(401).json({
                         status:0,
-                        message:err.message
+                        message:err.message,
                     });
                 }
                 res.status(201).json({
                     status:1,
-                    message:'Successfull created new user'
+                    message:'Successfull created new user',
+                    data:{id:user._id, email:user.email, company:user.company}
                 });
               });
         } else {
@@ -59,9 +61,11 @@ router.get("/login",async(req,res)=> {
     const body= req.body;
     try {
         const user= await User.findOne({email: body.email});
-        console.log(body.password, user.password)
         bcrypt.compare(body.password, user.password, (err, result)=> {
            if(result) {
+            const token= createToken(user._id);
+            console.log(token)
+            res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000});
             res.status(200).json({
                 status:1,
                 message:'Successfully logged in'
@@ -82,19 +86,16 @@ router.get("/login",async(req,res)=> {
    
 })
 
-router.get("/list", async (req, res) => {
-  try {
-    let users = await User.find();
-    res.status(200).json({
-      status: 200,
-      data: users,
-    });
-  } catch (e) {
-    res.status(400).json({
-      status: 400,
-      message: err.message,
-    });
-  }
-});
+const maxAge= 3*24*60*60;
+const createToken=(id)=> {
+   // create token
+   return jwt.sign(
+    { user_id: id },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn:maxAge ,
+      }
+  )
+}
 
 module.exports = router;

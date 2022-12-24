@@ -13,6 +13,9 @@ let postSchema = new Schema(
       },
       company: {
         type:String
+      },
+      token:{
+        type:String
       }
     },
   );
