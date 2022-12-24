@@ -20,6 +20,9 @@ let surveySchema = new Schema(
         ],
         id:{
             type:String
+        },
+        user:{
+            type:String
         }
     },
   );

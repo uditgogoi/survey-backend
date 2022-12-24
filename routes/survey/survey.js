@@ -6,7 +6,26 @@ const jwt = require('jsonwebtoken');
 const SECRET_TOKEN= require("../../nodemon.json")
 
 router.get("/list",async(req,res)=> {
-    console.log("this is running")
+    try {
+        var token= req.headers['x-access-token'] || req.headers['authorization'];
+        token = token.replace(/^Bearer\s+/, "");
+        if(!token) {
+            return res.status(401).send({ status:0, message: 'No token provided.' })
+        }
+        const decode= jwt.verify(token,process.env.TOKEN_KEY );
+        const user= await findUser(decode.user_id);
+        if(!user){
+            res.status(401).send({status:0, message:"Error in finding user"})
+        }
+        const surveys= await Survey.find({user:decode.user_id })
+        res.status(200).json({
+            status:200,
+            message:'Successfully got surveys',
+            data:surveys
+        })
+    } catch(e) {
+        
+    }
 
 })
 
@@ -28,7 +47,8 @@ router.post("/add",async(req,res)=> {
         title:req.body.title,
         required:req.body.required,
         options:req.body.options,
-        id:req.body.id
+        id:req.body.id,
+        user:decode.user_id
     })
     newSurvey.save((err, survey) => {
         if (err) {
@@ -53,6 +73,7 @@ router.post("/add",async(req,res)=> {
 
 })
 
+
 const findUser=(userId) => {
     return new Promise(async(res,rej)=> {
         try{
@@ -67,6 +88,7 @@ const findUser=(userId) => {
         
     })
 }
+
 
 
 module.exports = router;
