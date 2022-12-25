@@ -9,7 +9,10 @@ const router = express.Router();
 router.post("/signup", async(req, res) => {
   bcrypt.hash(req.body.password, salt, async(err, encrypted) => {
     if (err) {
-      console.log(err);
+      res.status(401).json({
+        status:0,
+        message:err.message
+    });
     } else {
       try {
         const user= await User.findOne({email: req.body.email});
@@ -64,7 +67,6 @@ router.get("/login",async(req,res)=> {
         bcrypt.compare(body.password, user.password, (err, result)=> {
            if(result) {
             const token= createToken(user._id);
-            console.log(token)
             res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000});
             res.status(200).json({
                 status:1,

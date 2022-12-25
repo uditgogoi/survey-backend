@@ -24,7 +24,38 @@ router.get("/list",async(req,res)=> {
             data:surveys
         })
     } catch(e) {
-        
+        res.status(401).json({
+            status:200,
+            message:e.message,
+        })
+    }
+
+})
+
+router.get("/list/:id",async(req,res)=> {
+    try {
+        var token= req.headers['x-access-token'] || req.headers['authorization'];
+        token = token.replace(/^Bearer\s+/, "");
+        if(!token) {
+            return res.status(401).send({ status:0, message: 'No token provided.' })
+        }
+        const decode= jwt.verify(token,process.env.TOKEN_KEY );
+        const user= await findUser(decode.user_id);
+        if(!user){
+            res.status(401).send({status:0, message:"Error in finding user"})
+        }
+        var id = req.params.id;
+        const survey= await Survey.find({user:decode.user_id, _id:id })
+        res.status(200).json({
+            status:200,
+            message:'Successfully got survey',
+            data:survey
+        })
+    } catch(e) {
+        res.status(401).json({
+            status:200,
+            message:e.message,
+        })
     }
 
 })
