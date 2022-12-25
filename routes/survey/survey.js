@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 router.get("/list",async(req,res)=> {
     try {
         var token= req.headers['x-access-token'] || req.headers['authorization'];
-        token = token.replace(/^Bearer\s+/, "");
         if(!token) {
             return res.status(401).send({ status:0, message: 'No token provided.' })
         }
+        token = token.replace(/^Bearer\s+/, "");
         const decode= jwt.verify(token,process.env.TOKEN_KEY );
         const user= await findUser(decode.user_id);
         if(!user){
@@ -34,10 +34,10 @@ router.get("/list",async(req,res)=> {
 router.get("/list/:id",async(req,res)=> {
     try {
         var token= req.headers['x-access-token'] || req.headers['authorization'];
-        token = token.replace(/^Bearer\s+/, "");
         if(!token) {
             return res.status(401).send({ status:0, message: 'No token provided.' })
         }
+        token = token.replace(/^Bearer\s+/, "");
         const decode= jwt.verify(token,process.env.TOKEN_KEY );
         const user= await findUser(decode.user_id);
         if(!user){
@@ -62,10 +62,10 @@ router.get("/list/:id",async(req,res)=> {
 router.post("/add",async(req,res)=> {
    try{
     var token= req.headers['x-access-token'] || req.headers['authorization'];
-    token = token.replace(/^Bearer\s+/, "");
     if(!token) {
         return res.status(401).send({ status:0, message: 'No token provided.' })
     }
+    token = token.replace(/^Bearer\s+/, "");
     const decode= jwt.verify(token,process.env.TOKEN_KEY );    
     // add the survey
     const user= await findUser(decode.user_id);
