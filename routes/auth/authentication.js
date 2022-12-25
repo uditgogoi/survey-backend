@@ -60,7 +60,7 @@ router.post("/signup", async(req, res) => {
   });
 });
 
-router.get("/login",async(req,res)=> {
+router.post("/login",async(req,res)=> {
     const body= req.body;
     try {
         const user= await User.findOne({email: body.email});
