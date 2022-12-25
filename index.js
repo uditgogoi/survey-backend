@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 require('dotenv').config()
 
 
-const url =PROCESS.env.MONGO_DB_URL;
+const url =process.env.MONGO_DB_URL;
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
