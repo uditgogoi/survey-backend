@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 require('dotenv').config()
 
 
-const url ="mongodb://udit:P%40ssw0rd123@ac-sjm6zfd-shard-00-00.qexisls.mongodb.net:27017,ac-sjm6zfd-shard-00-01.qexisls.mongodb.net:27017,ac-sjm6zfd-shard-00-02.qexisls.mongodb.net:27017/survey?ssl=true&replicaSet=atlas-5ese32-shard-0&authSource=admin&retryWrites=true&w=majority";
+const url =PROCESS.env.MONGO_DB_URL;
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
