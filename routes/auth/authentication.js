@@ -67,10 +67,10 @@ router.post("/login",async(req,res)=> {
         bcrypt.compare(body.password, user.password, (err, result)=> {
            if(result) {
             const token= createToken(user._id);
-            res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000});
             res.status(200).json({
                 status:1,
-                message:'Successfully logged in'
+                message:'Successfully logged in',
+                accessToken:token
             })
            } else {
             res.status(401).json({
