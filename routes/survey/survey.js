@@ -3,7 +3,6 @@ const Survey = require("../../models/Survey");
 const User = require("../../models/User");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const SECRET_TOKEN= require("../../nodemon.json")
 
 router.get("/list",async(req,res)=> {
     try {
