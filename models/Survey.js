@@ -2,33 +2,30 @@ const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 let surveySchema = new Schema(
     {
-        questionType: {
-            type: String,
-        },
-        title:{
-            type:String,
-        },
-        required: {
-            type: Boolean,
-        },
-        options: [
-            {
-                id:{type:String},
-                value:{type:String},
-                displaySequence:{type:Number}
-            }
-        ],
-        id:{
-            type:String
-        },
+        questions: [{
+            type: questionType,
+            default : []
+        }],   
         user:{
             type:String
         }
     },
   );
   
-let optionSchema= new Schema({
-
+let questionType= new Schema({
+    title:{
+        type:String,
+    },
+    required: {
+        type: Boolean,
+    },
+    options: [
+        {
+            id:{type:String},
+            value:{type:String},
+            displaySequence:{type:Number}
+        }
+    ],
 })
 
   let Survey = mongoose.model("Survey", surveySchema);
