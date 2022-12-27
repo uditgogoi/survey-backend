@@ -68,7 +68,7 @@ router.post("/add",async(req,res)=> {
     if(req.body.questions.length===0) {
         return res.status(401).send({ status:0, message: 'No survey questions entered' })
     }
-    token = token.replace(/^Bearer\s+/, "");
+    token = token.replace(/^Bearer\s+/, "").trim();
     const decode= jwt.verify(token,process.env.TOKEN_KEY );    
     // add the survey
     const user= await findUser(decode.user_id);
@@ -77,6 +77,7 @@ router.post("/add",async(req,res)=> {
     }
     const newSurvey= new Survey({
         questions:req.body.questions,
+        title:req.body.title,
         user:decode.user_id
     })
     newSurvey.save((err, survey) => {

@@ -70,7 +70,12 @@ router.post("/login",async(req,res)=> {
             res.status(200).json({
                 status:1,
                 message:'Successfully logged in',
-                accessToken:token
+                data:{
+                  accessToken:token,
+                  userId:user._id,
+                  company:user.company,
+                  email:user.email
+                }
             })
            } else {
             res.status(401).json({
