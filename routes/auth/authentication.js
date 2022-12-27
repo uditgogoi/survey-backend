@@ -92,6 +92,23 @@ router.post("/login",async(req,res)=> {
     }
    
 })
+router.get("/logout", async(res,req)=> {
+  try {
+    var token= req.headers['x-access-token'] || req.headers['authorization'];
+    if(!token) {
+        return res.status(401).send({ status:0, message: 'No token provided.' })
+    }
+    token = token.replace(/^Bearer\s+/, "");
+    const decode= jwt.verify(token,process.env.TOKEN_KEY );
+    destroyToken(decode.user_id);
+    res.end()
+  } catch(e){
+    res.status(401).json({
+      status:0,
+      message:e.message
+    })
+  }
+})
 
 const maxAge= 3*24*60*60;
 const createToken=(id)=> {
@@ -101,6 +118,16 @@ const createToken=(id)=> {
       process.env.TOKEN_KEY,
       {
         expiresIn:maxAge ,
+      }
+  )
+}
+
+const destroyToken=(id)=> {
+  return jwt.sign(
+    { user_id: id },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: Date.now(),
       }
   )
 }
