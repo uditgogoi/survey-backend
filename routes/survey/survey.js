@@ -4,7 +4,7 @@ const User = require("../../models/User");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-router.get("/list",async(req,res)=> {
+router.post("/list",async(req,res)=> {
     try {
         // var token= req.headers['x-access-token'] || req.headers['authorization'];
         // if(!token) {
@@ -34,7 +34,7 @@ router.get("/list",async(req,res)=> {
 
 })
 
-router.get("/list/:id",async(req,res)=> {
+router.post("/list/:id",async(req,res)=> {
     try {
         let token = req.body.accessToken;
         if(!token) {
