@@ -14,7 +14,7 @@ router.post("/list",async(req,res)=> {
          if(!token) {
             return res.status(401).send({ status:0, message: 'No token provided.' })
         }
-        const decode= jwt.verify(token,process.env.TOKEN_KEY );
+        const decode= jwt.verify(JSON.parse(token),process.env.TOKEN_KEY );
         const user= await findUser(decode.user_id);
         if(!user){
             res.status(401).send({status:0, message:"Error in finding user"})
@@ -40,7 +40,7 @@ router.post("/list/:id",async(req,res)=> {
         if(!token) {
             return res.status(401).send({ status:0, message: 'No token provided.' })
         }
-        const decode= jwt.verify(token,process.env.TOKEN_KEY );
+        const decode= jwt.verify(JSON.parse(token),process.env.TOKEN_KEY );
         const user= await findUser(decode.user_id);
         if(!user){
             res.status(401).send({status:0, message:"Error in finding user"})
@@ -70,7 +70,7 @@ router.post("/add",async(req,res)=> {
     if(req.body.questions.length===0) {
         return res.status(401).send({ status:0, message: 'No survey questions entered' })
     }
-    const decode= jwt.verify(token,process.env.TOKEN_KEY );    
+    const decode= jwt.verify(JSON.parse(token),process.env.TOKEN_KEY );    
     // add the survey
     const user= await findUser(decode.user_id);
     if(!user){
