@@ -86,12 +86,12 @@ router.post("/add",async(req,res)=> {
             res.status(401).json({
                 status:0,
                 message:err.message,
-                data:survey
             });
         }
         res.status(201).json({
             status:1,
-            message:'Successfull added survey'
+            message:'Successfull added survey',
+            data:survey
         });
       })
 

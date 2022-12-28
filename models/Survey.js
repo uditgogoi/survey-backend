@@ -21,7 +21,10 @@ let surveySchema = new Schema(
         questions: [{
             type: questionType,
             default : []
-        }],   
+        }],
+        title:{
+            type:String
+        },
         user:{
             type:String
         }
