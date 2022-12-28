@@ -27,7 +27,7 @@ router.post("/list",async(req,res)=> {
         })
     } catch(e) {
         res.status(401).json({
-            status:200,
+            status:0,
             message:e.message,
         })
     }
@@ -48,13 +48,13 @@ router.post("/list/:id",async(req,res)=> {
         var id = req.params.id;
         const survey= await Survey.find({user:decode.user_id, _id:id })
         res.status(200).json({
-            status:200,
+            status:0,
             message:'Successfully got survey',
             data:survey
         })
     } catch(e) {
         res.status(401).json({
-            status:200,
+            status:0,
             message:e.message,
         })
     }
