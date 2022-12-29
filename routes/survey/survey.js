@@ -48,7 +48,7 @@ router.post("/list/id",async(req,res)=> {
         var id = req.body.id;
         const survey= await Survey.find({user:decode.user_id, _id:id })
         res.status(200).json({
-            status:0,
+            status:1,
             message:'Successfully got survey',
             data:survey
         })
