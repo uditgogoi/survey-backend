@@ -46,7 +46,7 @@ router.post("/list/id",async(req,res)=> {
             res.status(401).send({status:0, message:"Error in finding user"})
         }
         var id = req.body.id;
-        const survey= await Survey.find({user:decode.user_id, _id:id })
+        const survey= await Survey.findOne({user:decode.user_id, _id:id })
         res.status(200).json({
             status:1,
             message:'Successfully got survey',
