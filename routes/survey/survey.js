@@ -34,7 +34,7 @@ router.post("/list",async(req,res)=> {
 
 })
 
-router.post("/list/:id",async(req,res)=> {
+router.post("/list/id",async(req,res)=> {
     try {
         let token = req.body.accessToken;
         if(!token) {
@@ -45,7 +45,7 @@ router.post("/list/:id",async(req,res)=> {
         if(!user){
             res.status(401).send({status:0, message:"Error in finding user"})
         }
-        var id = req.params.id;
+        var id = req.body.id;
         const survey= await Survey.find({user:decode.user_id, _id:id })
         res.status(200).json({
             status:0,
