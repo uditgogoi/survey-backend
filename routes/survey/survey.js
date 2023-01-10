@@ -4,6 +4,7 @@ const User = require("../../models/User");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
+// get list of all the surveys
 router.post("/list",async(req,res)=> {
     try {
         // var token= req.headers['x-access-token'] || req.headers['authorization'];
@@ -34,6 +35,7 @@ router.post("/list",async(req,res)=> {
 
 })
 
+// get details of a specific survey
 router.post("/list/id",async(req,res)=> {
     try {
         let token = req.body.accessToken;
@@ -61,6 +63,7 @@ router.post("/list/id",async(req,res)=> {
 
 })
 
+// add new survey
 router.post("/add",async(req,res)=> {
    try{
     let token = req.body.accessToken;
@@ -103,7 +106,6 @@ router.post("/add",async(req,res)=> {
    }
 
 })
-
 
 const findUser=(userId) => {
     return new Promise(async(res,rej)=> {

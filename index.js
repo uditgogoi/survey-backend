@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const authentication = require("./routes/auth/authentication");
-const survey= require("./routes/survey/survey")
+const survey= require("./routes/survey/survey");
+const client= require("./routes/survey/client");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 require('dotenv').config()
@@ -33,7 +34,8 @@ app.use(function(req, res, next) {
   next();
 });
 app.use("/auth", authentication);
-app.use("/app/survey", survey)
+app.use("/app/survey", survey);
+app.use("/client", client);
 
 app.listen(3000, () => {
   console.log("app is runing");
