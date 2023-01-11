@@ -54,6 +54,11 @@ router.post("/login",async(req,res)=> {
     const body= req.body;
     try {
         const user= await User.findOne({email: body.email});
+        if(!user) {
+          const message="User doesn't exist"
+          sendApiError(res,message);
+          return;
+        }
         bcrypt.compare(body.password, user.password, (err, result)=> {
            if(result) {
             const token= createToken(user._id);
