@@ -3,6 +3,8 @@ const Survey = require("../../models/Survey");
 const User = require("../../models/User");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { sendApiError } = require("../../utils/errorHandling");
+
 
 // get list of all the surveys
 router.post("/list",async(req,res)=> {
@@ -13,24 +15,25 @@ router.post("/list",async(req,res)=> {
         // }
         let token = req.body.accessToken;
          if(!token) {
-            return res.status(401).send({ status:0, message: 'No token provided.' })
+            const message="No token provided";
+            sendApiError(res, message);
+            return;
         }
         const decode= jwt.verify(JSON.parse(token),process.env.TOKEN_KEY );
         const user= await findUser(decode.user_id);
         if(!user){
-            res.status(401).send({status:0, message:"Error in finding user"})
+            const message="Error in finding user";
+            sendApiError(res, message);
+            return;
         }
         const surveys= await Survey.find({user:decode.user_id })
         res.status(200).json({
-            status:200,
+            status:'OK',
             message:'Successfully got surveys',
             data:surveys
         })
     } catch(e) {
-        res.status(401).json({
-            status:0,
-            message:e.message,
-        })
+        sendApiError(res, e.message);
     }
 
 })
@@ -40,25 +43,26 @@ router.post("/list/id",async(req,res)=> {
     try {
         let token = req.body.accessToken;
         if(!token) {
-            return res.status(401).send({ status:0, message: 'No token provided.' })
+            const message="No token provided";
+            sendApiError(res, message);
+            return;
         }
         const decode= jwt.verify(JSON.parse(token),process.env.TOKEN_KEY );
         const user= await findUser(decode.user_id);
         if(!user){
-            res.status(401).send({status:0, message:"Error in finding user"})
+            const message="Error in finding user";
+            sendApiError(res, message);
+            return;
         }
         var id = req.body.id;
         const survey= await Survey.findOne({user:decode.user_id, _id:id })
         res.status(200).json({
-            status:1,
+            status:'OK',
             message:'Successfully got survey',
             data:survey
         })
     } catch(e) {
-        res.status(401).json({
-            status:0,
-            message:e.message,
-        })
+        sendApiError(res, e.message);
     }
 
 })
@@ -68,16 +72,22 @@ router.post("/add",async(req,res)=> {
    try{
     let token = req.body.accessToken;
     if(!token) {
-        return res.status(401).send({ status:0, message: 'No token provided.' })
+        const message="No token provided";
+        sendApiError(res, message);
+        return;
     }
     if(req.body.questions.length===0) {
-        return res.status(401).send({ status:0, message: 'No survey questions entered' })
+        const message="No survey questions entered";
+        sendApiError(res, message);
+        return;
     }
     const decode= jwt.verify(JSON.parse(token),process.env.TOKEN_KEY );    
     // add the survey
     const user= await findUser(decode.user_id);
     if(!user){
-        res.status(401).send({status:0, message:"Error in adding"})
+        const message="Error in adding new survey";
+        sendApiError(res, message);
+        return;
     }
     const newSurvey= new Survey({
         questions:req.body.questions,
@@ -86,23 +96,18 @@ router.post("/add",async(req,res)=> {
     })
     newSurvey.save((err, survey) => {
         if (err) {
-            res.status(401).json({
-                status:0,
-                message:err.message,
-            });
+            sendApiError(res, err.message);
+            return;
         }
         res.status(201).json({
-            status:1,
+            status:'OK',
             message:'Successfull added survey',
             data:survey
         });
       })
 
    } catch(e) {
-        res.status(401).json({
-            status:0,
-            message:"error is " + e.message
-        });
+        sendApiError(res, e.message);
    }
 
 })

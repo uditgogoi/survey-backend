@@ -1,6 +1,6 @@
 const sendApiError=(res,message)=> {
     res.status(401).json({
-        status:0,
+        status:'err',
         message:message
     })
 }
