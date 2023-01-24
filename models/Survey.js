@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 let questionType= new Schema({
+    type:{
+        type:String,
+        require:true
+    },
     title:{
         type:String,
     },
