@@ -54,6 +54,7 @@ router.post("/responses", async (req, res)=> {
   try {
     const clientRequestData= req.body;
     let userID = clientRequestData.user_id+'';
+    const surveyID = clientRequestData.survey_id+'';
     const user = await User.findById({ _id:new ObjectId(userID)});
     if (!user) {
       const message = "No user found";
